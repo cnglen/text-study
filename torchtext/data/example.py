@@ -10,11 +10,21 @@ class Example(object):
     """
 
     @classmethod
-    def fromJSON(cls, data, fields):
+    def fromJSON(cls, data: str, fields: dict):
+        """
+        args:
+          data: json str
+          fields: dict: old_name -> (new_name, Field)
+        """
         return cls.fromdict(json.loads(data), fields)
 
     @classmethod
-    def fromdict(cls, data, fields):
+    def fromdict(cls, data: dict, fields: dict):
+        """
+        args:
+          data:
+          fields: dict: old_name -> (new_name, Field)
+        """
         ex = cls()
         for key, vals in fields.items():
             if key not in data:
@@ -30,6 +40,14 @@ class Example(object):
 
     @classmethod
     def fromCSV(cls, data, fields, field_to_index=None):
+        """
+        args:
+          data:
+          fields:
+             list[(str, Field)] if field_to_index is None;
+             Dict: old_name -> (new_name, Field) if field_to_index is Not None
+          fields_to_index:
+        """
         if field_to_index is None:
             return cls.fromlist(data, fields)
         else:
@@ -38,13 +56,18 @@ class Example(object):
             return cls.fromdict(data_dict, fields)
 
     @classmethod
-    def fromlist(cls, data, fields):
+    def fromlist(cls, data: list, fields: list):
+        """
+        args:
+          data: List, 每个元素为对应某个Field的内容, 顺序与fields顺序一致
+          fields: List: (str, Field) or ((str, str, ...), (Field, Field, ...)), 一个val对应对个field?
+        """
         ex = cls()
         for (name, field), val in zip(fields, data):
             if field is not None:
                 if isinstance(val, six.string_types):
                     val = val.rstrip('\n')
-                # Handle field tuples
+                # Handle field tuples ??
                 if isinstance(name, tuple):
                     for n, f in zip(name, field):
                         setattr(ex, n, f.preprocess(val))

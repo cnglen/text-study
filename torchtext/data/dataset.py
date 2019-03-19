@@ -69,19 +69,17 @@ class Dataset(torch.utils.data.Dataset):
                 Dataset (sub)class being used.
 
         Returns:
-            Tuple[Dataset]: Datasets for train, validation, and
-            test splits in that order, if provided.
+            Tuple[Dataset]: Datasets for train, validation, and test splits in that order, if provided.
+
+
+        cls具体依赖于子类的具体__init__实现，该子类的__init__ call 父类(Dataset)的__init__()
         """
         if path is None:
             path = cls.download(root)
-        train_data = None if train is None else cls(
-            os.path.join(path, train), **kwargs)
-        val_data = None if validation is None else cls(
-            os.path.join(path, validation), **kwargs)
-        test_data = None if test is None else cls(
-            os.path.join(path, test), **kwargs)
-        return tuple(d for d in (train_data, val_data, test_data)
-                     if d is not None)
+        train_data = None if train is None else cls(os.path.join(path, train), **kwargs)
+        val_data = None if validation is None else cls(os.path.join(path, validation), **kwargs)
+        test_data = None if test is None else cls(os.path.join(path, test), **kwargs)
+        return tuple(d for d in (train_data, val_data, test_data) if d is not None)
 
     def split(self, split_ratio=0.7, stratified=False, strata_field='label',
               random_state=None):
@@ -244,9 +242,7 @@ class TabularDataset(Dataset):
                 for more details.
         """
         format = format.lower()
-        make_example = {
-            'json': Example.fromJSON, 'dict': Example.fromdict,
-            'tsv': Example.fromCSV, 'csv': Example.fromCSV}[format]
+        make_example = {'json': Example.fromJSON, 'dict': Example.fromdict, 'tsv': Example.fromCSV, 'csv': Example.fromCSV}[format]
 
         with io.open(os.path.expanduser(path), encoding="utf8") as f:
             if format == 'csv':

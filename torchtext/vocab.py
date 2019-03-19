@@ -27,6 +27,7 @@ class Vocab(object):
             numerical identifiers.
         itos: A list of token strings indexed by their numerical identifiers.
     """
+
     def __init__(self, counter, max_size=None, min_freq=1, specials=['<pad>'],
                  vectors=None, unk_init=None, vectors_cache=None, specials_first=True):
         """Create a Vocab object from a collections.Counter.
@@ -108,6 +109,9 @@ class Vocab(object):
         return len(self.itos)
 
     def extend(self, v, sort=False):
+        """
+        extend vocab `v` to self, 将v吞并
+        """
         words = sorted(v.itos) if sort else v.itos
         for w in words:
             if w not in self.stoi:

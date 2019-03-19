@@ -6,6 +6,7 @@ class Batch(object):
 
     Attributes:
         batch_size: Number of examples in the batch.
+        data: List[Example]
         dataset: A reference to the dataset object the examples come from
             (which itself contains the dataset's Field objects).
         train: Deprecated: this attribute is left for backwards compatibility,
