@@ -91,7 +91,7 @@ class Dataset(torch.utils.data.Dataset):
                 or a list of numbers denoting the relative sizes of train, test and valid
                 splits respectively. If the relative size for valid is missing, only the
                 train-test split is returned. Default is 0.7 (for the train set).
-            stratified (bool): whether the sampling should be stratified.
+            stratified (bool): whether the sampling should be stratified. 是否按某个字段切分，保证切分后该字段的分布一致（比如正负样本比例）
                 Default is False.
             strata_field (str): name of the examples Field stratified over.
                 Default is 'label' for the conventional label field.
@@ -308,6 +308,9 @@ def check_split_ratio(split_ratio):
 
 
 def stratify(examples, strata_field):
+    """
+    按strata_field的值将example分组，每组的example中strata_field中的值相同
+    """
     # The field has to be hashable otherwise this doesn't work
     # There's two iterations over the whole dataset here, which can be
     # reduced to just one if a dedicated method for stratified splitting is used

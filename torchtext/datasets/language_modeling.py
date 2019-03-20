@@ -12,10 +12,8 @@ class LanguageModelingDataset(data.Dataset):
         Arguments:
             path: Path to the data file.
             text_field: The field that will be used for text data.
-            newline_eos: Whether to add an <eos> token for every newline in the
-                data file. Default: True.
-            Remaining keyword arguments: Passed to the constructor of
-                data.Dataset.
+            newline_eos: Whether to add an <eos> token for every newline in the data file. Default: True.
+            Remaining keyword arguments: Passed to the constructor of data.Dataset.
         """
         fields = [('text', text_field)]
         text = []
@@ -26,8 +24,7 @@ class LanguageModelingDataset(data.Dataset):
                     text.append(u'<eos>')
 
         examples = [data.Example.fromlist([text], fields)]
-        super(LanguageModelingDataset, self).__init__(
-            examples, fields, **kwargs)
+        super(LanguageModelingDataset, self).__init__(examples, fields, **kwargs)
 
 
 class WikiText2(LanguageModelingDataset):

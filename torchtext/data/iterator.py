@@ -252,8 +252,18 @@ class BucketIterator(Iterator):
                                 sort_within_batch=self.sort_within_batch)
 
 
-def batch(data, batch_size, batch_size_fn=None):
-    """Yield elements from data in chunks of batch_size."""
+def batch(data: Dataset, batch_size, batch_size_fn=None):
+    """
+    Yield elements from data in chunks of batch_size.
+
+    args:
+      data:
+      batch_size:
+      batch_size_fn: a function to get batch_size
+
+    yiels:
+      List[Example]
+    """
     if batch_size_fn is None:
         def batch_size_fn(new, count, sofar):
             return count
